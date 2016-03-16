@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  root 'chronos#home'
+
+  get 'chronos/getJobs'
+
+  get 'chronos/getStats'
+
+  get 'chronos/getJobInfo'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
