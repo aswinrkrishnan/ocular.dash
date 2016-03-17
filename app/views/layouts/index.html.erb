@@ -7,18 +7,19 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
-    <!-- <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"> -->
-    <%= stylesheet_link_tag    'application' %>
-  	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  	<%= csrf_meta_tags %>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="plugins/font-awesome-4.5.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- jvectormap -->
-    <%= stylesheet_link_tag 'jquery-jvectormap-1.2.2.css' %>
+    <link rel="stylesheet" href="plugins/jvectormap/jquery-jvectormap-1.2.2.css">
     <!-- Theme style -->
-    <%= stylesheet_link_tag 'AdminLTE.min.css' %>
-    <!-- Purple Light Skin used. -->
-    <%= stylesheet_link_tag 'skins/skin-purple-light.css' %>
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -34,7 +35,7 @@
         <!-- Logo -->
         <a href="#" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><%=fa_icon "binoculars"%></span>
+          <span class="logo-mini"><i class="fa fa-binoculars"></i></span>
           <!-- logo for regular state and mobile devices -->
           <span class="logo-lg"><b>ocular</b> DASHBOARD</span>
         </a>
@@ -48,7 +49,7 @@
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <!-- Messages: style can be found in dropdown.less-->
-                <li><a href="#"><%=fa_icon "sign-out"%></a>
+                <li><a href="#"><i class="fa fa-sign-out"></i></a>
               </li>
             </ul>
           </div>
@@ -63,7 +64,7 @@
           <!-- Sidebar user panel -->
           <div class="user-panel">
             <div class="pull-left image">
-              <%= image_tag("avatar5.png", class: "img-circle", alt: "User Image") %>
+              <img src="dist/img/avatar5.png" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
               <p>Omnia Operations</p>
@@ -71,9 +72,9 @@
           </div>
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
-            <li><a href="#"><%=fa_icon "contao"%> <span>Chronos job monitor</span></a></li>
-            <li><a href="#"><%=fa_icon "leanpub"%> <span>Docker Registry</span></a></li>
-            <li><a href="#"><%=fa_icon "code-fork"%> <span>Ops Logical versions</span></a></li>
+            <li><a href="#"><i class="fa fa-contao"></i> <span>Chronos job monitor</span></a></li>
+            <li><a href="#"><i class="fa fa-leanpub"></i> <span>Docker Registry</span></a></li>
+            <li><a href="#"><i class="fa fa-code-fork"></i> <span>Ops Logical versions</span></a></li>
           </ul>
         </section>
         <!-- /.sidebar -->
@@ -88,7 +89,7 @@
             <small>Version 1.0</small>
           </h1>
           <ol class="breadcrumb">
-            <li><a href="#"><%=fa_icon "dashboard"%> Home</a></li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">Dashboard</li>
           </ol>
         </section>
