@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OcularDash</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">  
+      <div class="login-logo">
+        <i class="fa fa-binoculars"></i> <b>ocular</b> DASHBOARD
+      </div><!-- /.login-logo -->
+      <div class="login-box-body">
+        <%= yield %>
+      </div><!-- /.login-box-body -->
+    </div><!-- /.login-box -->
+  </body>
+</html>
