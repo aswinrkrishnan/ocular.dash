@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>OcularDash</title>
+  <title>ocular DASHBOARD|| </title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <script type="text/javascript">
+  	$(function(){
+  		if($("#notice").text()!=""){
+  		  $("#notice").addClass("callout callout-info");
+  	    }
+  	    if($("#alert").text()!=""){
+  		  $("#alert").addClass("callout callout-danger");
+  		}
+  	})
+  </script>
 </head>
 <body class="hold-transition login-page">
     <div class="login-box">  
@@ -12,6 +22,8 @@
         <i class="fa fa-binoculars"></i> <b>ocular</b> DASHBOARD
       </div><!-- /.login-logo -->
       <div class="login-box-body">
+      <p id="notice"><%= notice %></p>
+      <p id="alert"><%= alert %></p>
         <%= yield %>
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->
