@@ -1,3 +1,115 @@
-<h1>Chronos#home</h1>
-<p>Find me in app/views/chronos/home.html.erb</p>
-<%= @jobCount%>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+   <h1>
+      chronos 
+      <small>JOB MONITOR</small>
+   </h1>
+</section>
+<!-- Main content -->
+<section class="content">
+   <!-- Small boxes (Stat box) -->
+   <div class="row" ng-controller="getChronosCount">
+      <div class="col-lg-3 col-xs-6" onclick="filterTable('all')">
+         <div class="info-box pointerCursor">
+            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+            <div class="info-box-content">
+               <span class="info-box-text">Total Jobs</span>
+               <span class="info-box-number">
+                  <h3><%= @totalJob %></h3>
+               </span>
+            </div>
+            <!-- /.info-box-content -->
+         </div>
+         <!-- /.info-box -->
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-xs-6" onclick="filterTable('success')">
+         <div class="info-box pointerCursor"> 
+            <span class="info-box-icon bg-green"><i class="fa fa-check"></i></span>
+            <div class="info-box-content">
+               <span class="info-box-text">Jobs Success</span>
+               <span class="info-box-number">
+                  <h3><%= @successJobs %></h3>
+               </span>
+            </div>
+            <!-- /.info-box-content -->
+         </div>
+         <!-- /.info-box -->
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-xs-6" onclick="filterTable('idle')">
+         <div class="info-box pointerCursor">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-exclamation-triangle"></i></span>
+            <div class="info-box-content">
+               <span class="info-box-text">Jobs Idle</span>
+               <span class="info-box-number">
+                  <h3><%= @idleJobs %></h3>
+               </span>
+            </div>
+            <!-- /.info-box-content -->
+         </div>
+         <!-- /.info-box -->
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-xs-6">
+         <div class="info-box pointerCursor"  onclick="filterTable('failure')">
+            <span class="info-box-icon bg-red"> <i class="fa fa-times"></i></span>
+            <div class="info-box-content">
+               <span class="info-box-text">Jobs Failed</span>
+               <span class="info-box-number">
+                  <h3><%= @failedJobs %></h3>
+               </span>
+            </div>
+            <!-- /.info-box-content -->
+         </div>
+         <!-- /.info-box -->
+      </div>
+      <!-- ./col -->
+   </div>
+   <!-- Main row -->
+   <div class="row">
+      <div class="col-xs-12">
+         <div class="box">
+            <div class="box-header">
+               <h3 class="box-title">Job Details</h3>
+               <div class="box-tools">
+                  <div class="input-group" style="width: 150px;">
+                     <input type="text" name="table_search" id="job_search" class="form-control input-sm pull-right" placeholder="Search">
+                     <div class="input-group-btn">
+                        <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding" ng-controller="getJobList">
+               <table class="table table-hover" id="jobList">
+                  <thead>
+                     <tr class="pointerCursor">
+                        <th>Job Name <i class="fa fa-sort"></i></th>
+                        <th>Last Run (AEST) <i class="fa fa-sort"></th>
+                        <th>Status <i class="fa fa-sort"></th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr ng-repeat="job in jobList">
+                        <td class="jobNameDetail pointerCursor" ng-click=showJobDetails(job)>{{job.name}}</td>
+                        <td>
+                           <span class="lastRunDate" ng-if="job.lastSuccess > job.lastError">{{job.lastSuccess | dateTransform}}</span>
+                           <span class="lastRunDate" ng-if="job.lastSuccess < job.lastError">{{job.lastError | dateTransform}}</span>
+                        </td>
+                        <td>
+                           <span ng-if="job.lastSuccess != '' && job.lastSuccess > job.lastError" class="label label-success">success</span>
+                           <span ng-if="job.lastError != '' && job.lastSuccess < job.lastError" class="label label-danger">failure</span>
+                           <span ng-if="job.lastError == '' && job.lastSuccess == ''" class="label label-warning">idle</span>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+            <!-- /.box-body -->
+         </div>
+         <!-- /.box -->
+      </div>
+   </div>
+</section>
