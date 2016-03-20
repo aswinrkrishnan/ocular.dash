@@ -92,8 +92,15 @@
                      </tr>
                   </thead>
                   <tbody>
-                     <tr ng-repeat="job in jobList">
-                        <td class="jobNameDetail pointerCursor" ng-click=showJobDetails(job)>{{job.name}}</td>
+                  <% @jobList.each do |job| %>
+                  	<tr>
+                  		<td><%= job['name'] %></td>
+                  		<td><%= job['time'] %></td>
+                  		<td><p class="label label-success"><%= job['status'] %><p></td>
+                  	</tr>
+                  <% end %>
+                    <!--  <tr ng-repeat="job in jobList">
+                        <td class="pointerCursor"></td>
                         <td>
                            <span class="lastRunDate" ng-if="job.lastSuccess > job.lastError">{{job.lastSuccess | dateTransform}}</span>
                            <span class="lastRunDate" ng-if="job.lastSuccess < job.lastError">{{job.lastError | dateTransform}}</span>
@@ -103,7 +110,7 @@
                            <span ng-if="job.lastError != '' && job.lastSuccess < job.lastError" class="label label-danger">failure</span>
                            <span ng-if="job.lastError == '' && job.lastSuccess == ''" class="label label-warning">idle</span>
                         </td>
-                     </tr>
+                     </tr> -->
                   </tbody>
                </table>
             </div>
