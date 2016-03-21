@@ -12,3 +12,4 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.precompile += %w( jquery-jvectormap-1.2.2.css )
 Rails.application.config.assets.precompile += %w( AdminLTE.min.css )
 Rails.application.config.assets.precompile += %w( skins/skin-purple-light.min.css )
+Rails.application.config.assets.precompile += %w( chronos.js )

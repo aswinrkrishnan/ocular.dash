@@ -1,4 +1,9 @@
 <!-- Content Header (Page header) -->
+<% content_for :head do %>
+  <script type="text/javascript">
+    <%= render :partial => 'chronos.js' %>
+  </script>
+<% end %>
 <section class="content-header">
    <h1>
       chronos 
@@ -82,7 +87,7 @@
                </div>
             </div>
             <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding" ng-controller="getJobList">
+            <div class="box-body table-responsive no-padding">
                <table class="table table-hover" id="jobList">
                   <thead>
                      <tr class="pointerCursor">
@@ -94,9 +99,24 @@
                   <tbody>
                   <% @jobList.each do |job| %>
                   	<tr>
-                  		<td><%= job['name'] %></td>
-                  		<td><%= job['time'] %></td>
-                  		<td><p class="label label-success"><%= job['status'] %><p></td>
+                  		<td class="cursor-pointer"><%= job['name'] %></td>
+                  		<td><span class="jobTime">
+                           <%if (job['lastSuccess'] <=> job['lastError']) == 1%>
+                              <%= job['lastSuccess'] %>
+                           <%elsif (job['lastSuccess'] <=> job['lastError']) == -1%>
+                              <%= job['lastError'] %>
+                           <% end %>
+                        </span></td>
+                        <td><p class="statusIcon label">
+                           <%if (job['lastSuccess'] <=> job['lastError']) == 1%>
+                              <%= "success" %>
+                           <%elsif (job['lastSuccess'] <=> job['lastError']) == -1%>
+                              <%= "failed " %>
+                              <% else %>
+                              <%= "idle   " %>
+                           <% end %>
+                        </p></td>
+                  		<!-- <td><p class="label label-success"><p></td> -->
                   	</tr>
                   <% end %>
                     <!--  <tr ng-repeat="job in jobList">

@@ -2,6 +2,8 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+
+
 # $('#jobList tr th').click(function(){
 #   $("#jobList tr th i").removeClass();
 #   $("#jobList tr th i").addClass("fa fa-sort");
