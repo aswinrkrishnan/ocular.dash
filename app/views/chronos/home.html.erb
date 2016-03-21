@@ -1,5 +1,5 @@
 <!-- Content Header (Page header) -->
-<% content_for :head do %>
+<% content_for :js do %>
   <script type="text/javascript">
     <%= render :partial => 'chronos.js' %>
   </script>
@@ -10,6 +10,88 @@
       <small>JOB MONITOR</small>
    </h1>
 </section>
+ <!-- Job details Modal -->
+<div class="modal fade" id="jobDetails"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+   <div class="box box-primary">
+      <div class="box-header with-border">
+         <h3 class="box-title"><b><span id="jobName"></span></b></h3>
+         <div class="box-tools pull-right">
+            <button class="btn btn-box-tool close" data-dismiss="modal"><i class="fa fa-times"></i></button>
+         </div>
+      </div>
+      <div class="box-body"></div>
+      <div class="box-body">
+         <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs pull-right">
+               <li><a href="#graph" data-toggle="tab">Dependancy Graph</a></li>
+               <li><a href="#volInfo" data-toggle="tab">Volume Details</a></li>
+               <li class="active"><a href="#basicInfo" data-toggle="tab">Basic Information</a></li>
+               <li class="pull-left header">
+                  <i class="fa fa-play"></i>
+                  <i class="fa fa-trash"></i>
+                  <i class="fa fa-pencil-square-o"></i>
+                  <i class="fa fa-files-o"></i>
+            </li>
+            </ul>
+            <div class="tab-content">
+               <div class="tab-pane" id="graph" ng-controller="dependancyGraph">
+               </div>
+               <!-- /.tab-pane -->
+               <div class="tab-pane" id="volInfo">
+                  <table class="table table-bordered table-hover" id="volInfoTable">
+                     <tr>
+                        <th>hostPath</th>
+                        <th>containerPath</th>
+                        <th>mode</th>
+                     </tr>
+                  </table>
+               </div>
+               <!-- /.tab-pane -->
+               <div class="tab-pane active" id="basicInfo">
+                  <table class="table table-bordered table-hover">
+                     <tr>
+                        <td>Name</td>
+                        <td colspan="3"><span id="jobName"/></td>
+                     </tr>
+                     <tr>
+                        <td>Description</td>
+                        <td colspan="3"><span id="description"/></td>
+                     </tr>
+                     <tr>
+                        <td>Command</td>
+                        <td colspan="3"><span id="command"/></td>
+                     </tr>
+                     <tr>
+                        <td>Owner</td>
+                        <td colspan="3"><span id="owner"/></td>
+                     </tr>
+                     <tr>
+                        <td>Last Success</td>
+                        <td><span id="lastSuccess"/></td>
+                        <td>Success Count</td>
+                        <td><span id="successCount"/></td>
+                     </tr>
+                     <tr>
+                        <td>Last Error</td>
+                        <td><span id="lastError"/></td>
+                        <td>Error Count</td>
+                        <td><span id="errorCount"/></td>
+                     </tr>
+                     <tr>
+                        <td>Schedule</td>
+                        <td colspan="3"><span id="schedule"/></td>
+                     </tr>
+                  </table>
+               </div>
+               <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+         </div>
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer"></div>
+   </div>
+</div>
 <!-- Main content -->
 <section class="content">
    <!-- Small boxes (Stat box) -->
@@ -99,7 +181,10 @@
                   <tbody>
                   <% @jobList.each do |job| %>
                   	<tr>
-                  		<td class="cursor-pointer"><%= job['name'] %></td>
+                  		<td class="cursor-pointer" onclick=showJobDetails(this)><%= job['name'] %>
+<%= content_tag "div", class: "jobDescription", data: {job: job} do %>
+<% end %>
+                        </td>
                   		<td><span class="jobTime">
                            <%if (job['lastSuccess'] <=> job['lastError']) == 1%>
                               <%= job['lastSuccess'] %>
