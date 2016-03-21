@@ -1,8 +1,8 @@
 <!-- Content Header (Page header) -->
 <% content_for :js do %>
-  <script type="text/javascript">
-    <%= render :partial => 'chronos.js' %>
-  </script>
+<script type="text/javascript">
+   <%= render :partial => 'chronos.js' %>
+</script>
 <% end %>
 <section class="content-header">
    <h1>
@@ -10,8 +10,8 @@
       <small>JOB MONITOR</small>
    </h1>
 </section>
- <!-- Job details Modal -->
-<div class="modal fade" id="jobDetails"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!-- Job details Modal -->
+<div class="modal fade" id="jobDetails"  tabindex="-1" role="dialog" aria-labelledby="jobDetails">
    <div class="box box-primary">
       <div class="box-header with-border">
          <h3 class="box-title"><b><span id="jobName"></span></b></h3>
@@ -31,18 +31,18 @@
                   <i class="fa fa-trash"></i>
                   <i class="fa fa-pencil-square-o"></i>
                   <i class="fa fa-files-o"></i>
-            </li>
+               </li>
             </ul>
             <div class="tab-content">
-               <div class="tab-pane" id="graph" ng-controller="dependancyGraph">
+               <div class="tab-pane" id="graph">
                </div>
                <!-- /.tab-pane -->
                <div class="tab-pane" id="volInfo">
                   <table class="table table-bordered table-hover" id="volInfoTable">
                      <tr>
-                        <th>hostPath</th>
-                        <th>containerPath</th>
-                        <th>mode</th>
+                        <th>HostPath</th>
+                        <th>ContainerPath</th>
+                        <th>Mode</th>
                      </tr>
                   </table>
                </div>
@@ -95,7 +95,7 @@
 <!-- Main content -->
 <section class="content">
    <!-- Small boxes (Stat box) -->
-   <div class="row" ng-controller="getChronosCount">
+   <div class="row">
       <div class="col-lg-3 col-xs-6" onclick="filterTable('all')">
          <div class="info-box cursor-pointer">
             <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
@@ -111,7 +111,7 @@
       </div>
       <!-- ./col -->
       <div class="col-lg-3 col-xs-6" onclick="filterTable('success')">
-         <div class="info-box cursor-pointer"> 
+         <div class="info-box cursor-pointer">
             <span class="info-box-icon bg-green"><i class="fa fa-check"></i></span>
             <div class="info-box-content">
                <span class="info-box-text">Jobs Success</span>
@@ -179,30 +179,33 @@
                      </tr>
                   </thead>
                   <tbody>
-                  <% @jobList.each do |job| %>
-                  	<tr>
-                  		<td class="cursor-pointer" onclick=showJobDetails(this)><%= job['name'] %>
-<%= content_tag "div", class: "jobDescription", data: {job: job} do %>
-<% end %>
-                        </td>
-                  		<td><span class="jobTime">
-                           <%if (job['lastSuccess'] <=> job['lastError']) == 1%>
-                              <%= job['lastSuccess'] %>
-                           <%elsif (job['lastSuccess'] <=> job['lastError']) == -1%>
-                              <%= job['lastError'] %>
+                     <% @jobList.each do |job| %>
+                     <tr>
+                        <td class="cursor-pointer" onclick=showJobDetails(this)><%= job['name'] %>
+                           <%= content_tag "div", class: "jobDescription", data: {job: job} do %>
                            <% end %>
-                        </span></td>
-                        <td><p class="statusIcon label">
+                        </td>
+                        <td><span class="jobTime">
                            <%if (job['lastSuccess'] <=> job['lastError']) == 1%>
-                              <%= "success" %>
+                           <%= job['lastSuccess'] %>
                            <%elsif (job['lastSuccess'] <=> job['lastError']) == -1%>
+                           <%= job['lastError'] %>
+                           <% end %>
+                           </span>
+                        </td>
+                        <td>
+                           <p class="statusIcon label">
+                              <%if (job['lastSuccess'] <=> job['lastError']) == 1%>
+                              <%= "success" %>
+                              <%elsif (job['lastSuccess'] <=> job['lastError']) == -1%>
                               <%= "failed" %>
                               <% else %>
                               <%= "idle" %>
-                           <% end %>
-                        </p></td>
-                  	</tr>
-                  <% end %>
+                              <% end %>
+                           </p>
+                        </td>
+                     </tr>
+                     <% end %>
                   </tbody>
                </table>
             </div>
