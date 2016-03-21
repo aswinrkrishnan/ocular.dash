@@ -15,7 +15,7 @@
    <!-- Small boxes (Stat box) -->
    <div class="row" ng-controller="getChronosCount">
       <div class="col-lg-3 col-xs-6" onclick="filterTable('all')">
-         <div class="info-box pointerCursor">
+         <div class="info-box cursor-pointer">
             <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
             <div class="info-box-content">
                <span class="info-box-text">Total Jobs</span>
@@ -29,7 +29,7 @@
       </div>
       <!-- ./col -->
       <div class="col-lg-3 col-xs-6" onclick="filterTable('success')">
-         <div class="info-box pointerCursor"> 
+         <div class="info-box cursor-pointer"> 
             <span class="info-box-icon bg-green"><i class="fa fa-check"></i></span>
             <div class="info-box-content">
                <span class="info-box-text">Jobs Success</span>
@@ -43,7 +43,7 @@
       </div>
       <!-- ./col -->
       <div class="col-lg-3 col-xs-6" onclick="filterTable('idle')">
-         <div class="info-box pointerCursor">
+         <div class="info-box cursor-pointer">
             <span class="info-box-icon bg-yellow"><i class="fa fa-exclamation-triangle"></i></span>
             <div class="info-box-content">
                <span class="info-box-text">Jobs Idle</span>
@@ -57,7 +57,7 @@
       </div>
       <!-- ./col -->
       <div class="col-lg-3 col-xs-6">
-         <div class="info-box pointerCursor"  onclick="filterTable('failure')">
+         <div class="info-box cursor-pointer"  onclick="filterTable('failed')">
             <span class="info-box-icon bg-red"> <i class="fa fa-times"></i></span>
             <div class="info-box-content">
                <span class="info-box-text">Jobs Failed</span>
@@ -90,7 +90,7 @@
             <div class="box-body table-responsive no-padding">
                <table class="table table-hover" id="jobList">
                   <thead>
-                     <tr class="pointerCursor">
+                     <tr class="cursor-pointer">
                         <th>Job Name <i class="fa fa-sort"></i></th>
                         <th>Last Run (AEST) <i class="fa fa-sort"></th>
                         <th>Status <i class="fa fa-sort"></th>
@@ -111,26 +111,13 @@
                            <%if (job['lastSuccess'] <=> job['lastError']) == 1%>
                               <%= "success" %>
                            <%elsif (job['lastSuccess'] <=> job['lastError']) == -1%>
-                              <%= "failed " %>
+                              <%= "failed" %>
                               <% else %>
-                              <%= "idle   " %>
+                              <%= "idle" %>
                            <% end %>
                         </p></td>
-                  		<!-- <td><p class="label label-success"><p></td> -->
                   	</tr>
                   <% end %>
-                    <!--  <tr ng-repeat="job in jobList">
-                        <td class="pointerCursor"></td>
-                        <td>
-                           <span class="lastRunDate" ng-if="job.lastSuccess > job.lastError">{{job.lastSuccess | dateTransform}}</span>
-                           <span class="lastRunDate" ng-if="job.lastSuccess < job.lastError">{{job.lastError | dateTransform}}</span>
-                        </td>
-                        <td>
-                           <span ng-if="job.lastSuccess != '' && job.lastSuccess > job.lastError" class="label label-success">success</span>
-                           <span ng-if="job.lastError != '' && job.lastSuccess < job.lastError" class="label label-danger">failure</span>
-                           <span ng-if="job.lastError == '' && job.lastSuccess == ''" class="label label-warning">idle</span>
-                        </td>
-                     </tr> -->
                   </tbody>
                </table>
             </div>
