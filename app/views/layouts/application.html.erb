@@ -69,9 +69,9 @@
               </div>
               <!-- sidebar menu: : style can be found in sidebar.less -->
               <ul class="sidebar-menu">
-                <li><a href="#"><%=fa_icon "contao"%> <span>Chronos job monitor</span></a></li>
-                <li><a href="#"><%=fa_icon "leanpub"%> <span>Docker Registry</span></a></li>
-                <li><a href="#"><%=fa_icon "code-fork"%> <span>Ops Logical versions</span></a></li>
+                <li><%= link_to '<i class="fa fa-contao"></i><span>Chronos job monitor</span>'.html_safe ,chronos_home_url , method: :get%></li>
+                <li><%= link_to '<i class="fa fa-leanpub"></i><span>Docker Registry</span>'.html_safe ,chronos_home_url, method: :get %></li>
+                <li><%= link_to '<i class="fa fa-code-fork"></i><span>Ops Logical versions</span>'.html_safe ,opslogical_index_url , method: :get%></li>
               </ul>
             </section>
             <!-- /.sidebar -->
