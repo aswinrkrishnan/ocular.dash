@@ -4,5 +4,6 @@ class OpslogicalController < ApplicationController
     require 'rest_client'
   def index
   	
+    #@lines = JSON.parse(lines)
   end
 end

@@ -20,6 +20,8 @@ $(function(){
 	});
 	$("#scoringProdCount").text(envMap['env.scoring.prod'].length)
 	$("#dsProdCount").text(envMap['env.datascience.prod'].length)
+	$("#dspreProdCount").text(envMap['env.datascience.preprod'].length)
+	$("#dsTestCount").text(envMap['env.datascience.test'].length)
 
 	for(var repo in envMap['env.scoring.prod']){
 		project = envMap['env.scoring.prod'][repo].split(',')

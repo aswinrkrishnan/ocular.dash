@@ -1,89 +1,117 @@
 <!-- Content Header (Page header) -->
 <% content_for :js do %>
 <script type="text/javascript">
-	<%= render :partial => 'opslogical.js' %>
+   <%= render :partial => 'opslogical.js' %>
 </script>
 <% end %>
 <section class="content-header">
-	<h1>
-		ops.logical 
-		<small>VERSIONS</small>
-	</h1>
+   <h1>
+      ops.logical 
+      <small>VERSIONS</small>
+   </h1>
 </section>
 <!-- Main content -->
 <div id="opsLogicalData" style="display: None"><%= @lines['lines'].to_json %></div>
 <section class="content">
-	<!-- Small boxes (Stat box) -->
-	<div class="row">
-		<div class="col-lg-3 col-xs-6">
-			<div class="info-box">
-				<span class="info-box-icon bg-orange"><i class="fa fa-code-fork"></i></span>
-				<div class="info-box-content">
-					<span class="info-box-text">scoring.prod</span>
-					<span class="info-box-number">
-						<h3 id="scoringProdCount"></h3>
-					</span>
-				</div>
-				<!-- /.info-box-content -->
-			</div>
-			<!-- /.info-box -->
-		</div>
-		<!-- ./col -->
-		<div class="col-lg-3 col-xs-6">
-			<div class="info-box">
-				<span class="info-box-icon bg-light-blue"><i class="fa fa-code-fork"></i></span>
-				<div class="info-box-content">
-					<span class="info-box-text">datascience.prod</span>
-					<span class="info-box-number">
-						<h3 id="dsProdCount"></h3>
-					</span>
-				</div>
-				<!-- /.info-box-content -->
-			</div>
-			<!-- /.info-box -->
-		</div>
-		<!-- ./col -->
-	</div>
-	<div class="row">
-		<div class="col-md-6">
-			<div class="box">
-				<div class="box-header">
-					<h3 class="box-title">scoring.prod</h3>
-				</div>
-				<!-- /.box-header -->
-				<div class="box-body table-responsive no-padding">
-					<table class="table table-hover" id="scoringProdRepoList">
-						<thead>
-							<tr>
-								<th>Repo Name</th>
-								<th>Version</th>
-							</tr>
-						</thead>
-					</table>
-				</div>
-				<!-- /.box-body -->
-			</div>
-		</div>
-		<!-- ./col -->
-		<div class="col-md-6">
-			<div class="box">
-				<div class="box-header">
-					<h2 class="box-title">datascience.prod</h2>
-				</div>
-				<!-- /.box-header -->
-				<div class="box-body table-responsive no-padding">
-					<table class="table table-hover" id="dsProdRepoList">
-						<thead>
-							<tr>
-								<th>Repo Name</th>
-								<th>Version</th>
-							</tr>
-						</thead>
-					</table>
-				</div>
-				<!-- /.box-body -->
-			</div>
-		</div>
-		<!-- ./col -->
-	</div>
+   <!-- Small boxes (Stat box) -->
+   <div class="row">
+      <div class="col-lg-3 col-xs-6">
+         <div class="info-box">
+            <span class="info-box-icon bg-orange"><i class="fa fa-code-fork"></i></span>
+            <div class="info-box-content">
+               <span class="info-box-text">scoring.prod</span>
+               <span class="info-box-number">
+                  <h3 id="scoringProdCount"></h3>
+               </span>
+            </div>
+            <!-- /.info-box-content -->
+         </div>
+         <!-- /.info-box -->
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-xs-6">
+         <div class="info-box">
+            <span class="info-box-icon bg-light-blue"><i class="fa fa-code-fork"></i></span>
+            <div class="info-box-content">
+               <span class="info-box-text">datascience.prod</span>
+               <span class="info-box-number">
+                  <h3 id="dsProdCount"></h3>
+               </span>
+            </div>
+            <!-- /.info-box-content -->
+         </div>
+         <!-- /.info-box -->
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-xs-6">
+         <div class="info-box">
+            <span class="info-box-icon bg-teal-active"><i class="fa fa-code-fork"></i></span>
+            <div class="info-box-content">
+               <span class="info-box-text">datascience.preprod</span>
+               <span class="info-box-number">
+                  <h3 id="dspreProdCount"></h3>
+               </span>
+            </div>
+            <!-- /.info-box-content -->
+         </div>
+         <!-- /.info-box -->
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-xs-6">
+         <div class="info-box">
+            <span class="info-box-icon bg-aqua-active"><i class="fa fa-code-fork"></i></span>
+            <div class="info-box-content">
+               <span class="info-box-text">datascience.test</span>
+               <span class="info-box-number">
+                  <h3 id="dsTestCount"></h3>
+               </span>
+            </div>
+            <!-- /.info-box-content -->
+         </div>
+         <!-- /.info-box -->
+      </div>
+      <!-- ./col -->
+   </div>
+   <div class="row">
+      <div class="col-md-6">
+         <div class="box">
+            <div class="box-header">
+               <h3 class="box-title">scoring.prod</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+               <table class="table table-hover" id="scoringProdRepoList">
+                  <thead>
+                     <tr>
+                        <th>Repo Name</th>
+                        <th>Version</th>
+                     </tr>
+                  </thead>
+               </table>
+            </div>
+            <!-- /.box-body -->
+         </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-md-6">
+         <div class="box">
+            <div class="box-header">
+               <h2 class="box-title">datascience.prod</h2>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+               <table class="table table-hover" id="dsProdRepoList">
+                  <thead>
+                     <tr>
+                        <th>Repo Name</th>
+                        <th>Version</th>
+                     </tr>
+                  </thead>
+               </table>
+            </div>
+            <!-- /.box-body -->
+         </div>
+      </div>
+      <!-- ./col -->
+   </div>
 </section>
