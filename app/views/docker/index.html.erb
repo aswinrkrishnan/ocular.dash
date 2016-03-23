@@ -1,2 +1,170 @@
-<h1>Docker#index</h1>
-<p>Find me in app/views/docker/index.html.erb</p>
+<!-- Content Header (Page header) -->
+<% content_for :js do %>
+<script type="text/javascript">
+   <%= render :partial => 'docker.js' %>
+</script>
+<% end %>
+<section class="content-header">
+   <h1>
+      docker 
+      <small>REGISTRY</small>
+   </h1>
+</section>
+<!-- Job details Modal -->
+<div class="modal fade" id="jobDetails"  tabindex="-1" role="dialog" aria-labelledby="jobDetails">
+   <div class="box box-primary">
+      <div class="box-header with-border">
+         <h3 class="box-title"><b><span id="jobName"></span></b></h3>
+         <div class="box-tools pull-right">
+            <button class="btn btn-box-tool close" data-dismiss="modal"><i class="fa fa-times"></i></button>
+         </div>
+      </div>
+      <div class="box-body"></div>
+      <div class="box-body">
+         <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs pull-right">
+               <li><a href="#graph" data-toggle="tab">Dependancy Graph</a></li>
+               <li><a href="#volInfo" data-toggle="tab">Volume Details</a></li>
+               <li class="active"><a href="#basicInfo" data-toggle="tab">Basic Information</a></li>
+               <li class="pull-left header">
+                  <i class="fa fa-play"></i>
+                  <i class="fa fa-trash"></i>
+                  <i class="fa fa-pencil-square-o"></i>
+                  <i class="fa fa-files-o"></i>
+               </li>
+            </ul>
+            <div class="tab-content">
+               <div class="tab-pane" id="graph">
+               </div>
+               <!-- /.tab-pane -->
+               <div class="tab-pane" id="volInfo">
+                  <table class="table table-bordered table-hover" id="volInfoTable">
+                     <tr>
+                        <th>HostPath</th>
+                        <th>ContainerPath</th>
+                        <th>Mode</th>
+                     </tr>
+                  </table>
+               </div>
+               <!-- /.tab-pane -->
+               <div class="tab-pane active" id="basicInfo">
+                  <table class="table table-bordered table-hover">
+                     <tr>
+                        <td>Name</td>
+                        <td colspan="3"><span id="jobName"/></td>
+                     </tr>
+                     <tr>
+                        <td>Description</td>
+                        <td colspan="3"><span id="description"/></td>
+                     </tr>
+                     <tr>
+                        <td>Command</td>
+                        <td colspan="3"><span id="command"/></td>
+                     </tr>
+                     <tr>
+                        <td>Owner</td>
+                        <td colspan="3"><span id="owner"/></td>
+                     </tr>
+                     <tr>
+                        <td>Last Success</td>
+                        <td><span id="lastSuccess"/></td>
+                        <td>Success Count</td>
+                        <td><span id="successCount"/></td>
+                     </tr>
+                     <tr>
+                        <td>Last Error</td>
+                        <td><span id="lastError"/></td>
+                        <td>Error Count</td>
+                        <td><span id="errorCount"/></td>
+                     </tr>
+                     <tr>
+                        <td>Schedule</td>
+                        <td colspan="3"><span id="schedule"/></td>
+                     </tr>
+                  </table>
+               </div>
+               <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+         </div>
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer"></div>
+   </div>
+</div>
+<!-- Main content -->
+<section class="content">
+   <!-- Small boxes (Stat box) -->
+   <div class="row">
+      <div class="col-lg-3 col-xs-6">
+         <div class="info-box cursor-pointer">
+            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+            <div class="info-box-content">
+               <span class="info-box-text">Total Repository</span>
+               <span class="info-box-number">
+                  <h3><%= @totalJob %></h3>
+               </span>
+            </div>
+            <!-- /.info-box-content -->
+         </div>
+         <!-- /.info-box -->
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-xs-6">
+         <div class="info-box cursor-pointer">
+            <span class="info-box-icon bg-green"><i class="fa fa-check"></i></span>
+            <div class="info-box-content">
+               <span class="info-box-text">Total Images</span>
+               <span class="info-box-number">
+                  <h3><%= @successJobs %></h3>
+               </span>
+            </div>
+            <!-- /.info-box-content -->
+         </div>
+         <!-- /.info-box -->
+      </div>
+      <!-- ./col -->
+   </div>
+   <!-- Main row -->
+   <div class="row">
+      <div class="col-xs-12">
+         <div class="box">
+            <div class="box-header">
+               <h3 class="box-title">Job Details</h3>
+               <div class="box-tools">
+                  <div class="input-group" style="width: 150px;">
+                     <input type="text" name="table_search" id="job_search" class="form-control input-sm pull-right" placeholder="Search">
+                     <div class="input-group-btn">
+                        <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+               <table class="table table-hover" id="jobList">
+                  <thead>
+                     <tr class="cursor-pointer">
+                        <th>Job Name <i class="fa fa-sort"></i></th>
+                        <th>Last Run (AEST) <i class="fa fa-sort"></th>
+                        <th>Status <i class="fa fa-sort"></th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <% @repoList['repositories'].each do |repo| %>
+                     <tr>
+                        <td class="cursor-pointer" onclick=showJobDetails(this)><%= repo %>
+                           <%= content_tag "div", class: "repoDescription", data: {repo: repo} do %>
+                           <% end %>
+                        </td>
+                     </tr>
+                     <% end %>
+                  </tbody>
+               </table>
+            </div>
+            <!-- /.box-body -->
+         </div>
+         <!-- /.box -->
+      </div>
+   </div>
+</section>

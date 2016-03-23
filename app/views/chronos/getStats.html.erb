@@ -1,2 +1,33 @@
-<h1>Chronos#getStats</h1>
-<p>Find me in app/views/chronos/getStats.html.erb</p>
+<!-- Content Header (Page header) -->
+<% content_for :js do %>
+<script type="text/javascript">
+   <%= render :partial => 'chronosStats.js' %>
+</script>
+<% end %>
+<section class="content-header">
+   <h1>
+      chronos 
+      <small>JOB STATS</small>
+   </h1>
+</section>
+<!-- Main content -->
+<section class="content">
+<div id="jobListData" style="display: None"><%= @jobList.to_json %></div>
+        <section class="content">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Number of Jobs / hour</h3>
+                </div>
+                <div class="box-body">
+                  <div class="chart">
+                    <canvas id="areaChart" style="height:250px"></canvas>
+                  </div>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col (RIGHT) -->
+          </div><!-- /.row -->
+        </section><!-- /.content -->
+   </div>
+</section>

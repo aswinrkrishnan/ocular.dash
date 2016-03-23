@@ -9,10 +9,11 @@ $(function(){
 			$(this).addClass("label-warning")
 	});
 	$( ".jobTime").each(function() {
-		var time=$( this ).text().trim();
+		var time=$( this).text().trim();
 		if(time != "")
 			$( this ).text(timeDifference(time).replace(" GMT+1100 (AEDT)",""))
 	});
+	
 	$("#job_search").keyup(function() {
 		var value = this.value;
 		$("#jobList").find("tr").each(function(index) {
@@ -23,6 +24,44 @@ $(function(){
 			}
 		});
 	});
+	$("#slider-range").slider({
+		range: true,
+		min: 0,
+		max: 1440,
+		step: 15,
+		values: [0, 1440],
+		slide: function (e, ui) {
+			var hours1 = Math.floor(ui.values[0] / 60);
+			var minutes1 = ui.values[0] - (hours1 * 60);
+			if (hours1 < 10 ) hours1 = '0' + hours1;
+			if (minutes1 < 10) minutes1 = '0' + minutes1;
+			if (minutes1 == 0) minutes1 = '00';
+			$('#slider-time').html(hours1 + ':' + minutes1);
+
+			var hours2 = Math.floor(ui.values[1] / 60);
+			var minutes2 = ui.values[1] - (hours2 * 60);
+
+			if (hours2.length < 10) hours2 = '0' + hours2;
+			if (minutes2.length < 10) minutes2 = '0' + minutes2;
+			if (minutes2 == 0) minutes2 = '00';
+			$('#slider-time2').html(hours2 + ':' + minutes2);
+			filterDataOnTime(hours1 + ':' + minutes1, hours2 + ':' + minutes2);
+		}
+	});
+	function filterDataOnTime(timeFrom, timeTo) {
+		$('#jobList tbody tr').show();
+		$( ".jobTime").each(function() {
+			var time=$( this).text().split(' ')[4].trim();
+			if(time == "" || time < timeFrom || time > timeTo){
+				console.log(time+" -- "+timeFrom+" to  "+timeTo+"    TRUE")
+				$(this).parent().parent().hide();
+			}else{
+				console.log(time+" -- "+timeFrom+" to  "+timeTo+"   FALSE")
+			}
+
+		});
+	}
+
 })
 function timeDifference(previous) {
 	if(previous == ""){return "No Previous runs";}
