@@ -5,5 +5,6 @@ class OpslogicalController < ApplicationController
   def index
   	
     #@lines = JSON.parse(lines)
+    
   end
 end

@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  get 'docker/index'
+
   get 'opslogical/index'
 
   root 'chronos#home'
