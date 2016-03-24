@@ -49,16 +49,11 @@ $(function(){
 		}
 	});
 	function filterDataOnTime(timeFrom, timeTo) {
-		$('#jobList tbody tr').show();
 		$( ".jobTime").each(function() {
 			var time=$( this).text().split(' ')[4].trim();
 			if(time == "" || time < timeFrom || time > timeTo){
-				console.log(time+" -- "+timeFrom+" to  "+timeTo+"    TRUE")
 				$(this).parent().parent().hide();
-			}else{
-				console.log(time+" -- "+timeFrom+" to  "+timeTo+"   FALSE")
 			}
-
 		});
 	}
 
@@ -78,9 +73,7 @@ function filterTable(value){
 	if(value == 'all'){
 		$('#jobList tbody tr').show();
 	}else{
-		$('#jobList tbody tr').show();
-		$('#jobList tbody tr').hide();
-		$('#jobList tr td:contains("'+value+'")').parent().toggle();
+		$('#jobList tr:not(:contains("'+value+'"))').hide();
 	}
 }
 function showJobDetails(jobDetail){
