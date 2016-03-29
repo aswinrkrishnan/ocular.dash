@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  
-  get 'docker/index'
-
-  get 'opslogical/index'
 
   root 'chronos#home'
 
@@ -15,6 +11,14 @@ Rails.application.routes.draw do
   get 'chronos/getStats'
 
   get 'chronos/getJobInfo'
+
+  get 'opslogical/index'
+
+  get 'docker/index'
+
+  #get 'docker/getTagDetail'
+
+  get '/getTagDetail', :controller => 'docker', :action => 'getTagDetail'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

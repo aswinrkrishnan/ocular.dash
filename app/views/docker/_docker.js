@@ -1,5 +1,21 @@
 $(function(){
-})
+});
+
+function getTagDetail(repo, tag){
+	$.ajax({ 
+      type: 'GET', 
+      dataType: "json",
+      url: '/getTagDetail', 
+      data: {'repo' : repo, 
+            'tag' : tag},
+      success: function(data){
+        alert(data);
+      },
+      complete: function() {
+      	$("#jobDetails").modal('show');
+      }
+    });
+}
 function timeDifference(previous) {
 	if(previous == ""){return "No Previous runs";}
 	var msPerMinute = 60 * 1000;
