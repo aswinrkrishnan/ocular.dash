@@ -11,86 +11,55 @@
    </h1>
 </section>
 <!-- Job details Modal -->
-<div class="modal fade" id="jobDetails"  tabindex="-1" role="dialog" aria-labelledby="jobDetails">
+<div class="modal fade" id="tagDetails"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
    <div class="box box-primary">
       <div class="box-header with-border">
-         <h3 class="box-title"><b><%= @the_start %></b></h3>
+         <h3 class="box-title"><b><span id="repoName"></span></b>:<span id="tag"/></h3>
          <div class="box-tools pull-right">
             <button class="btn btn-box-tool close" data-dismiss="modal"><i class="fa fa-times"></i></button>
          </div>
       </div>
-      <div class="box-body"></div>
-      <div class="box-body">
-         <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs pull-right">
-               <li><a href="#graph" data-toggle="tab">Dependancy Graph</a></li>
-               <li><a href="#volInfo" data-toggle="tab">Volume Details</a></li>
-               <li class="active"><a href="#basicInfo" data-toggle="tab">Basic Information</a></li>
-               <li class="pull-left header">
-                  <i class="fa fa-play"></i>
-                  <i class="fa fa-trash"></i>
-                  <i class="fa fa-pencil-square-o"></i>
-                  <i class="fa fa-files-o"></i>
-               </li>
-            </ul>
-            <div class="tab-content">
-               <div class="tab-pane" id="graph">
-               </div>
-               <!-- /.tab-pane -->
-               <div class="tab-pane" id="volInfo">
-                  <table class="table table-bordered table-hover" id="volInfoTable">
-                     <tr>
-                        <th>HostPath</th>
-                        <th>ContainerPath</th>
-                        <th>Mode</th>
-                     </tr>
-                  </table>
-               </div>
-               <!-- /.tab-pane -->
-               <div class="tab-pane active" id="basicInfo">
-                  <table class="table table-bordered table-hover">
-                     <tr>
-                        <td>Name</td>
-                        <td colspan="3"><span id="jobName"/></td>
-                     </tr>
-                     <tr>
-                        <td>Description</td>
-                        <td colspan="3"><span id="description"/></td>
-                     </tr>
-                     <tr>
-                        <td>Command</td>
-                        <td colspan="3"><span id="command"/></td>
-                     </tr>
-                     <tr>
-                        <td>Owner</td>
-                        <td colspan="3"><span id="owner"/></td>
-                     </tr>
-                     <tr>
-                        <td>Last Success</td>
-                        <td><span id="lastSuccess"/></td>
-                        <td>Success Count</td>
-                        <td><span id="successCount"/></td>
-                     </tr>
-                     <tr>
-                        <td>Last Error</td>
-                        <td><span id="lastError"/></td>
-                        <td>Error Count</td>
-                        <td><span id="errorCount"/></td>
-                     </tr>
-                     <tr>
-                        <td>Schedule</td>
-                        <td colspan="3"><span id="schedule"/></td>
-                     </tr>
-                  </table>
-               </div>
-               <!-- /.tab-pane -->
-            </div>
-            <!-- /.tab-content -->
-         </div>
-      </div>
-      <!-- /.box-body -->
-      <div class="box-footer"></div>
+      <div class="box-header">
+        <div class="callout bg-gray"><b>pull command: </b>docker pull <span id="repoName"></span>:<span id="tag"/></div>
+        <div class="label bg-blue pad5 floatLeft pointerCursor margin10"><i class="fa fa-plus-circle"></i> Create a new tag for this Repo</div>
+        <div class="label bg-red pad5 floatRight pointerCursor margin10"><i class="fa fa-trash"></i> Delete Tag</div>
+     </div>
+     <div class="box-body">
+      <table class="table table-bordered table-hover">
+         <tr>
+            <td>Architecture</td>
+            <td><span id="architecture"/></td>
+         </tr>
+         <tr>
+            <td>Created</td>
+            <td><span id="created"/></td> 
+         </tr>
+         <tr>
+            <td>Image</td>
+            <td><span id="image"/></td>
+         </tr>
+         <tr>
+            <td>Container</td>
+            <td><span id="container"/></td>
+         </tr>
+         <tr>
+            <td>Docker Version</td>
+            <td><span id="dockerVersion"/></td>
+         </tr>
+         <tr>
+            <td>Operating System</td>
+            <td><span id="os"/></td> 
+         </tr>
+         <tr>
+            <td>Size</td>
+            <td colspan="3"><span id="size"/></td>
+         </tr>
+
+      </table>
    </div>
+   <!-- /.box-body -->
+   <div class="box-footer"></div>
+</div>
 </div>
 <!-- Main content -->
 <section class="content">
@@ -102,7 +71,7 @@
             <div class="info-box-content">
                <span class="info-box-text">Total Repository</span>
                <span class="info-box-number">
-                  <h3><%= @totalJob %></h3>
+                  <h3><%= @repoCount %></h3>
                </span>
             </div>
             <!-- /.info-box-content -->
@@ -116,7 +85,7 @@
             <div class="info-box-content">
                <span class="info-box-text">Total Images</span>
                <span class="info-box-number">
-                  <h3><%= @successJobs %></h3>
+                  <h3><%= @tagCount %></h3>
                </span>
             </div>
             <!-- /.info-box-content -->
@@ -154,7 +123,7 @@
                      <tr>
                         <td><%= repo['name'] %></td>
                         <td>
-                        <% repo['tags'][0 .. 4].each do |tag| %>
+                           <% repo['tags'][0 .. 4].each do |tag| %>
                            <p class="label bg-blue cursor-pointer" onClick='getTagDetail("<%= repo['name'] %>","<%= tag %>")'><i class="fa fa-tag"></i> <%= tag %></p>
                            <% end %>
                         </td>

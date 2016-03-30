@@ -4,15 +4,26 @@ $(function(){
 function getTagDetail(repo, tag){
 	$.ajax({ 
       type: 'GET', 
-      dataType: "json",
-      url: '/getTagDetail', 
-      data: {'repo' : repo, 
-            'tag' : tag},
+      dataType: 'html',
+      data: { repo: repo, tag: tag },
+      url: 'getTagDetail', 
       success: function(data){
-        alert(data);
+      	var tagDetail = JSON.parse(data)
+        $("#tagDetails").modal('show');
+        $("#tagDetails #repoName").text(tagDetail.name)
+        $("#tagDetails #tag").text(tagDetail.tag)
+        $("#tagDetails #architecture").text(tagDetail.architecture)
+        var history = jQuery.parseJSON(tagDetail.history[0].v1Compatibility)
+        $("#tagDetails #created").text(new Date(history.created))
+        $("#tagDetails #image").text(history.Image)
+        $("#tagDetails #container").text(history.container)
+        $("#jobDetails #dockerVersion").text(history.docker_version)
+        $("#tagDetails #os").text(history.os)
+        $("#tagDetails #size").text(history.Size)
+
       },
-      complete: function() {
-      	$("#jobDetails").modal('show');
+      error: function() {
+      	alert("ERROR")
       }
     });
 }
