@@ -8,3 +8,13 @@
     margin: auto;
     background: rgba(0,0,0,0) !important;
 }
+#timeSlider{
+	width: 75%;
+	margin: 0 auto;
+	display: none;
+}
+#timeFilter{
+	position: absolute;
+    margin-left: -99px;
+    margin-top: -30px;
+}

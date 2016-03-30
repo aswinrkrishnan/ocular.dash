@@ -31,6 +31,7 @@ $(function(){
 		step: 15,
 		values: [0, 1440],
 		slide: function (e, ui) {
+			$('#jobList tbody tr').show();
 			var hours1 = Math.floor(ui.values[0] / 60);
 			var minutes1 = ui.values[0] - (hours1 * 60);
 			if (hours1 < 10 ) hours1 = '0' + hours1;
@@ -56,7 +57,13 @@ $(function(){
 			}
 		});
 	}
-
+	$("#timeFilter").click(function(){
+		$("#timeSlider").slideToggle();
+		$("#slider-range").slider('values',0,0);
+		$("#slider-range").slider('values',1,1440); 
+		$('#slider-time').html('00:00');
+		$('#slider-time2').html('24:00');
+	});
 })
 function timeDifference(previous) {
 	if(previous == ""){return "No Previous runs";}
@@ -69,10 +76,27 @@ function timeDifference(previous) {
 	else if (elapsed < msPerDay ) return Math.round(elapsed/msPerHour ) + ' hours ago';
 	else return new Date(previous)+"";
 }
-function filterTable(value){
+function filterTable(value, e){
+	$(e).parent().find(".info-box").removeClass("bg-green");
+	$(e).parent().find(".info-box").removeClass("bg-red");
+	$(e).parent().find(".info-box").removeClass("bg-yellow");
 	if(value == 'all'){
+		$("#slider-range").slider('values',0,0);
+		$("#slider-range").slider('values',1,1440); 
+		$('#slider-time').html('00:00');
+		$('#slider-time2').html('24:00');
 		$('#jobList tbody tr').show();
 	}else{
+		if(value == 'idle'){
+			$(e).children(".info-box").addClass("bg-yellow");
+		}
+		else if(value == 'success'){
+			$(e).children(".info-box").addClass("bg-green");
+		}
+		else{
+			$(e).children(".info-box").addClass("bg-red");
+		}
+		
 		$('#jobList tr:not(:contains("'+value+'"))').hide();
 	}
 }

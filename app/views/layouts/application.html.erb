@@ -70,6 +70,7 @@
               <!-- sidebar menu: : style can be found in sidebar.less -->
               <ul class="sidebar-menu">
                 <li><%= link_to '<i class="fa fa-contao"></i><span>Chronos job monitor</span>'.html_safe ,chronos_home_url , method: :get%></li>
+                <li><%= link_to '<i class="fa fa-area-chart"></i><span>Job Stats</span>'.html_safe ,chronos_getStats_url , method: :get%></li>
                 <li><%= link_to '<i class="fa fa-leanpub"></i><span>Docker Registry</span>'.html_safe ,docker_index_url, method: :get %></li>
                 <li><%= link_to '<i class="fa fa-code-fork"></i><span>Ops Logical versions</span>'.html_safe ,opslogical_index_url , method: :get%></li>
               </ul>
