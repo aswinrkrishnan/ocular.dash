@@ -96,7 +96,7 @@
 <section class="content">
    <!-- Small boxes (Stat box) -->
    <div class="row">
-      <div class="col-lg-3 col-xs-6" onclick="filterTable('all')">
+      <div class="col-lg-3 col-xs-6" onclick="filterTable('all', this)">
          <div class="info-box cursor-pointer">
             <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
             <div class="info-box-content">
@@ -110,7 +110,7 @@
          <!-- /.info-box -->
       </div>
       <!-- ./col -->
-      <div class="col-lg-3 col-xs-6" onclick="filterTable('success')">
+      <div class="col-lg-3 col-xs-6" onclick="filterTable('success', this)">
          <div class="info-box cursor-pointer">
             <span class="info-box-icon bg-green"><i class="fa fa-check"></i></span>
             <div class="info-box-content">
@@ -124,7 +124,7 @@
          <!-- /.info-box -->
       </div>
       <!-- ./col -->
-      <div class="col-lg-3 col-xs-6" onclick="filterTable('idle')">
+      <div class="col-lg-3 col-xs-6" onclick="filterTable('idle', this)">
          <div class="info-box cursor-pointer">
             <span class="info-box-icon bg-yellow"><i class="fa fa-exclamation-triangle"></i></span>
             <div class="info-box-content">
@@ -138,8 +138,8 @@
          <!-- /.info-box -->
       </div>
       <!-- ./col -->
-      <div class="col-lg-3 col-xs-6">
-         <div class="info-box cursor-pointer"  onclick="filterTable('failed')">
+      <div class="col-lg-3 col-xs-6" onclick="filterTable('failed', this)">
+         <div class="info-box cursor-pointer">
             <span class="info-box-icon bg-red"> <i class="fa fa-times"></i></span>
             <div class="info-box-content">
                <span class="info-box-text">Jobs Failed</span>
@@ -160,58 +160,70 @@
             <div class="box-header">
                <h3 class="box-title">Job Details</h3>
                <div class="box-tools">
-                  <div class="input-group" style="width: 150px;">
+                <div class="input-group" style="width: 150px;">
                      <input type="text" name="table_search" id="job_search" class="form-control input-sm pull-right" placeholder="Search">
+                     <input type="text" id="job_search" style="display: none;">
                      <div class="input-group-btn">
                         <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
                      </div>
                   </div>
+                  <button id="timeFilter" type="button" class="btn btn-default btn-sm"><i class="fa fa-clock-o"></i> Time Filter</button>
                </div>
             </div>
             <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-               <table class="table table-hover" id="jobList">
-                  <thead>
-                     <tr class="cursor-pointer">
-                        <th>Job Name <i class="fa fa-sort"></i></th>
-                        <th>Last Run (AEST) <i class="fa fa-sort"></th>
-                        <th>Status <i class="fa fa-sort"></th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <% @jobList.each do |job| %>
-                     <tr>
-                        <td class="cursor-pointer" onclick=showJobDetails(this)><%= job['name'] %>
-                           <%= content_tag "div", class: "jobDescription", data: {job: job} do %>
-                           <% end %>
-                        </td>
-                        <td><span class="jobTime">
-                           <%if (job['lastSuccess'] <=> job['lastError']) == 1%>
-                           <%= job['lastSuccess'] %>
-                           <%elsif (job['lastSuccess'] <=> job['lastError']) == -1%>
-                           <%= job['lastError'] %>
-                           <% end %>
-                           </span>
-                        </td>
-                        <td>
-                           <p class="statusIcon label">
-                              <%if (job['lastSuccess'] <=> job['lastError']) == 1%>
-                              <%= "success" %>
-                              <%elsif (job['lastSuccess'] <=> job['lastError']) == -1%>
-                              <%= "failed" %>
-                              <% else %>
-                              <%= "idle" %>
-                              <% end %>
-                           </p>
-                        </td>
-                     </tr>
-                     <% end %>
-                  </tbody>
-               </table>
-            </div>
-            <!-- /.box-body -->
-         </div>
-         <!-- /.box -->
+            <div class="box-body" id="timeSlider">
+               <div id="time-range">
+                 <p>Time Range: <span id="slider-time">00:00</span> - <span id="slider-time2">23:59</span>
+
+                 </p>
+                 <div class="sliders_step1">
+                   <div id="slider-range"></div>
+                </div>
+             </div>
+          </div>
+          <div class="box-body table-responsive no-padding">
+            <table class="table table-hover" id="jobList">
+               <thead>
+                  <tr class="cursor-pointer">
+                     <th>Job Name <i class="fa fa-sort"></i></th>
+                     <th>Last Run (AEST) <i class="fa fa-sort"></th>
+                     <th>Status <i class="fa fa-sort"></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <% @jobList.each do |job| %>
+                  <tr>
+                     <td class="cursor-pointer" onclick=showJobDetails(this)><%= job['name'] %>
+                        <%= content_tag "div", class: "jobDescription", data: {job: job} do %>
+                        <% end %>
+                     </td>
+                     <td><span class="jobTime">
+                        <%if (job['lastSuccess'] <=> job['lastError']) == 1%>
+                        <%= job['lastSuccess'] %>
+                        <%elsif (job['lastSuccess'] <=> job['lastError']) == -1%>
+                        <%= job['lastError'] %>
+                        <% end %>
+                     </span>
+                  </td>
+                  <td>
+                     <p class="statusIcon label">
+                        <%if (job['lastSuccess'] <=> job['lastError']) == 1%>
+                        <%= "success" %>
+                        <%elsif (job['lastSuccess'] <=> job['lastError']) == -1%>
+                        <%= "failed" %>
+                        <% else %>
+                        <%= "idle" %>
+                        <% end %>
+                     </p>
+                  </td>
+               </tr>
+               <% end %>
+            </tbody>
+         </table>
       </div>
+      <!-- /.box-body -->
    </div>
+   <!-- /.box -->
+</div>
+</div>
 </section>
