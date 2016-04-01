@@ -9,21 +9,25 @@ $(function(){
 			$(this).addClass("label-warning")
 	});
 	$( ".jobTime").each(function() {
-		var time=$( this).text().trim();
+		var time=$(this).text().trim();
 		if(time != "")
 			$( this ).text(timeDifference(time).replace(" GMT+1100 (AEDT)",""))
 	});
-	
+	$( ".jobActualTime").each(function() {
+		var time=$(this).text().trim();
+		if(time != "")
+			$( this ).text(new Date(time))
+	});
 	$("#job_search").keyup(function() {
+		removeSelectionInfoBox()
 		var value = this.value;
 		$("#jobList").find("tr").each(function(index) {
 			if (!index) return;
-			if($(this).is(":visible")){
-				var id = $(this).find("td").text();
-				$(this).toggle(id.indexOf(value) !== -1);
-			}
+			var id = $(this).find("td").text();
+			$(this).toggle(id.indexOf(value) !== -1);
 		});
 	});
+
 	$("#slider-range").slider({
 		range: true,
 		min: 0,
@@ -41,17 +45,16 @@ $(function(){
 
 			var hours2 = Math.floor(ui.values[1] / 60);
 			var minutes2 = ui.values[1] - (hours2 * 60);
-
-			if (hours2.length < 10) hours2 = '0' + hours2;
+			if (hours2 < 10) hours2 = '0' + hours2;
 			if (minutes2.length < 10) minutes2 = '0' + minutes2;
 			if (minutes2 == 0) minutes2 = '00';
 			$('#slider-time2').html(hours2 + ':' + minutes2);
-			filterDataOnTime(hours1 + ':' + minutes1, hours2 + ':' + minutes2);
+			filterDataOnTime(hours1 + ':' + minutes1+":00", hours2 + ':' + minutes2+":00");
 		}
 	});
 	function filterDataOnTime(timeFrom, timeTo) {
-		$( ".jobTime").each(function() {
-			var time=$( this).text().split(' ')[4].trim();
+		$( ".jobActualTime").each(function() {
+			var time=$(this).text().split(' ')[4].trim()+"";
 			if(time == "" || time < timeFrom || time > timeTo){
 				$(this).parent().parent().hide();
 			}
@@ -64,6 +67,12 @@ $(function(){
 		$('#slider-time').html('00:00');
 		$('#slider-time2').html('24:00');
 	});
+
+	function removeSelectionInfoBox(){
+		$(".info-box").removeClass("bg-green");
+		$(".info-box").removeClass("bg-red");
+		$(".info-box").removeClass("bg-yellow");
+	}
 })
 function timeDifference(previous) {
 	if(previous == ""){return "No Previous runs";}
@@ -76,28 +85,61 @@ function timeDifference(previous) {
 	else if (elapsed < msPerDay ) return Math.round(elapsed/msPerHour ) + ' hours ago';
 	else return new Date(previous)+"";
 }
+
+function removeSelectionInfoBox(){
+	$(".info-box").removeClass("bg-green");
+	$(".info-box").removeClass("bg-red");
+	$(".info-box").removeClass("bg-yellow");
+}
+function resetSlider(){
+	$("#slider-range").slider('values',0,0);
+	$("#slider-range").slider('values',1,1440); 
+	$('#slider-time').html('00:00');
+	$('#slider-time2').html('23:59');
+}
+function showAllJobs(){
+	$('#jobList tbody tr').show();
+}
 function filterTable(value, e){
-	$(e).parent().find(".info-box").removeClass("bg-green");
-	$(e).parent().find(".info-box").removeClass("bg-red");
-	$(e).parent().find(".info-box").removeClass("bg-yellow");
 	if(value == 'all'){
-		$("#slider-range").slider('values',0,0);
-		$("#slider-range").slider('values',1,1440); 
-		$('#slider-time').html('00:00');
-		$('#slider-time2').html('24:00');
+		resetSlider()
+		removeSelectionInfoBox();
 		$('#jobList tbody tr').show();
 	}else{
 		if(value == 'idle'){
-			$(e).children(".info-box").addClass("bg-yellow");
+			if($(e).children(".info-box").hasClass("bg-yellow")){
+		removeSelectionInfoBox();
+				showAllJobs();
+			}
+			else{
+				$(e).children(".info-box").addClass("bg-yellow");	
+				$('#jobList tr:not(:contains("'+value+'"))').hide();
+
+			}
 		}
 		else if(value == 'success'){
-			$(e).children(".info-box").addClass("bg-green");
+			if($(e).children(".info-box").hasClass("bg-green")){
+		removeSelectionInfoBox();
+				showAllJobs();
+			}
+			else{
+				$(e).children(".info-box").addClass("bg-green");	
+				$('#jobList tr:not(:contains("'+value+'"))').hide();
+
+			}
 		}
 		else{
-			$(e).children(".info-box").addClass("bg-red");
+			if($(e).children(".info-box").hasClass("bg-red")){
+		removeSelectionInfoBox();
+				showAllJobs();
+			}
+			else{
+				$(e).children(".info-box").addClass("bg-red");	
+				$('#jobList tr:not(:contains("'+value+'"))').hide();
+
+			}
 		}
 		
-		$('#jobList tr:not(:contains("'+value+'"))').hide();
 	}
 }
 function showJobDetails(jobDetail){

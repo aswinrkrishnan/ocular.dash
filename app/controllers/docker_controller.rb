@@ -1,6 +1,5 @@
 class DockerController < ApplicationController
   
-  
   def index
   	rest_resource = RestClient::Resource.new(HOST_URI+"/v2/_catalog", "", "")
     repoList = rest_resource.get

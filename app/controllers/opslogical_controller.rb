@@ -4,6 +4,5 @@ class OpslogicalController < ApplicationController
     require 'rest_client'
   def index
   	
-    
   end
 end
