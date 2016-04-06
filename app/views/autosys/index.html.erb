@@ -1,0 +1,192 @@
+<!-- Content Header (Page header) -->
+<% content_for :js do %>
+<script type="text/javascript">
+	<%= render :partial => 'autosys.js' %>
+</script>
+<% end %>
+<section class="content-header">
+	<h1>
+		autosys 
+		<small>JOB MONITOR</small>
+	</h1>
+</section>
+<!-- Job details Modal -->
+<div class="modal fade" id="jobDetails"  tabindex="-1" role="dialog" aria-labelledby="jobDetails">
+	<div class="box box-primary">
+		<div class="box-header with-border">
+			<h3 class="box-title"><b><span id="jobName"></span></b></h3>
+			<div class="box-tools pull-right">
+				<button class="btn btn-box-tool close" data-dismiss="modal"><i class="fa fa-times"></i></button>
+			</div>
+		</div>
+		<div class="box-body"></div>
+		<div class="box-body">
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs pull-right">
+					<li><a href="#volInfo" data-toggle="tab">Job Description</a></li>
+					<li class="active"><a href="#basicInfo" data-toggle="tab">Previous Runs</a></li>
+				</ul>
+				<div class="tab-content">
+					<!-- /.tab-pane -->
+					<div class="tab-pane" id="volInfo">
+						<table class="table table-bordered table-hover" id="volInfoTable">
+							<tr>
+								<th>HostPath</th>
+								<th>ContainerPath</th>
+								<th>Mode</th>
+							</tr>
+						</table>
+					</div>
+					<!-- /.tab-pane -->
+					<div class="tab-pane active" id="basicInfo">
+						<table class="table table-hover" id="jobPreviousRuns">
+							<thead>
+							<tr>
+									<th>Start</th>
+									<th>End</th>
+									<th>Status</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+					<!-- /.tab-pane -->
+				</div>
+				<!-- /.tab-content -->
+			</div>
+		</div>
+		<!-- /.box-body -->
+		<div class="box-footer"></div>
+	</div>
+</div>
+<!-- Main content -->
+<section class="content">
+	<!-- Small boxes (Stat box) -->
+	<div class="row">
+		<div class="col-lg-3 col-xs-6" onclick="filterTable('all', this)">
+			<div class="info-box cursor-pointer">
+				<span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text">Total Jobs</span>
+					<span class="info-box-number">
+						<h3><%= @totalJob %></h3>
+					</span>
+				</div>
+				<!-- /.info-box-content -->
+			</div>
+			<!-- /.info-box -->
+		</div>
+		<!-- ./col -->
+		<div class="col-lg-3 col-xs-6" onclick="filterTable('success', this)">
+			<div class="info-box cursor-pointer">
+				<span class="info-box-icon bg-green"><i class="fa fa-check"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text">Jobs Success</span>
+					<span class="info-box-number">
+						<h3><%= @successJobs %></h3>
+					</span>
+				</div>
+				<!-- /.info-box-content -->
+			</div>
+			<!-- /.info-box -->
+		</div>
+		<!-- ./col -->
+		<div class="col-lg-3 col-xs-6" onclick="filterTable('idle', this)">
+			<div class="info-box cursor-pointer">
+				<span class="info-box-icon bg-yellow"><i class="fa fa-exclamation-triangle"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text">Jobs Idle</span>
+					<span class="info-box-number">
+						<h3><%= @idleJobs %></h3>
+					</span>
+				</div>
+				<!-- /.info-box-content -->
+			</div>
+			<!-- /.info-box -->
+		</div>
+		<!-- ./col -->
+		<div class="col-lg-3 col-xs-6" onclick="filterTable('failed', this)">
+			<div class="info-box cursor-pointer">
+				<span class="info-box-icon bg-red"> <i class="fa fa-times"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text">Jobs Failed</span>
+					<span class="info-box-number">
+						<h3><%= @failedJobs %></h3>
+					</span>
+				</div>
+				<!-- /.info-box-content -->
+			</div>
+			<!-- /.info-box -->
+		</div>
+		<!-- ./col -->
+	</div>
+	<!-- Main row -->
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title"><div class="input-group" style="width: 300px;">
+						<input type="text" id="jobPrefix" class="form-control input-sm pull-right" placeholder="Job prefix">
+						<div class="input-group-btn">
+							<button class='btn btn-sm btn-default' id='jobPrefix-btn'><i class='fa fa-search'></i></button>
+
+						</div>
+					</div></h3>
+					<div class="box-tools">
+						<div class="input-group" style="width: 150px;">
+							<input type="text" name="table_search" id="job_search" class="form-control input-sm pull-right" placeholder="Search">
+						</div>
+						<button id="timeFilter" type="button" class="btn btn-default btn-sm"><i class="fa fa-clock-o"></i> Time Filter</button>
+					</div>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body" id="timeSlider">
+					<div id="time-range">
+						<p>Time Range: <span id="slider-time">00:00</span> - <span id="slider-time2">23:59</span>
+
+						</p>
+						<div class="sliders_step1">
+							<div id="slider-range"></div>
+						</div>
+					</div>
+				</div>
+				<div class="box-body table-responsive no-padding">
+					<table class="table table-hover" id="jobList">
+						<thead>
+							<tr class="cursor-pointer">
+								<th>Job Name <i class="fa fa-sort"></i></th>
+								<th>Start (AEST) <i class="fa fa-sort"></th>
+								<th>End (AEST) <i class="fa fa-sort"></th>
+								<th>Status <i class="fa fa-sort"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<% @jobList.each do |job| %>
+							<tr>
+								<td class="cursor-pointer autosysJobName"><%= job['jobName'] %></td>
+								<td><%= job['start'] %></td>
+								<td><%= job['end'] %></td>
+								<td>
+									<p class="statusIcon label">
+										<%if job['status'] == 'SU'%>
+										<%= "success" %>
+										<%elsif job['status'] == 'FA'%>
+										<%= "failed" %>
+										<%elsif job['status'] == 'OH'%>
+										<%= "on-hold" %>
+										<% else %>
+										<%= "idle" %>
+										<% end %>
+									</p>
+								</td>
+							</tr>
+							<% end %>
+						</tbody>
+					</table>
+				</div>
+				<!-- /.box-body -->
+			</div>
+			<!-- /.box -->
+		</div>
+	</div>
+</section>

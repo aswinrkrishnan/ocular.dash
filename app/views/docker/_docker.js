@@ -20,7 +20,6 @@ function getTagDetail(repo, tag){
         $("#jobDetails #dockerVersion").text(history.docker_version)
         $("#tagDetails #os").text(history.os)
         $("#tagDetails #size").text(history.Size)
-
       },
       error: function() {
       	alert("ERROR")
