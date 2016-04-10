@@ -20,7 +20,13 @@ Rails.application.routes.draw do
 
   get 'autosys/index'
 
-  get 'autosys/getJobDetail'
+  get 'autosys/getJobRunDetail'
+
+  get 'autosys/jobPreviousRuns'
+
+  get 'autosys/getJobDesc'
+
+  get 'autosys/getJobLog'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

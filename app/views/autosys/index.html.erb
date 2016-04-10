@@ -14,7 +14,7 @@
 <div class="modal fade" id="jobDetails"  tabindex="-1" role="dialog" aria-labelledby="jobDetails">
 	<div class="box box-primary">
 		<div class="box-header with-border">
-			<h3 class="box-title"><b><span id="jobName"></span></b></h3>
+			<h3 class="box-title">Job Name:  <b><span id="jobName"></span></b></h3>
 			<div class="box-tools pull-right">
 				<button class="btn btn-box-tool close" data-dismiss="modal"><i class="fa fa-times"></i></button>
 			</div>
@@ -23,28 +23,46 @@
 		<div class="box-body">
 			<div class="nav-tabs-custom">
 				<ul class="nav nav-tabs pull-right">
-					<li><a href="#volInfo" data-toggle="tab">Job Description</a></li>
-					<li class="active"><a href="#basicInfo" data-toggle="tab">Previous Runs</a></li>
+					<li id="jobDescTab"><a href="#jobDesc" data-toggle="tab">Job Description</a></li>
+					<li id="previousRunTab"><a href="#previousRuns" data-toggle="tab">Previous Runs</a></li>
+					<li class="active" id="detailTab"><a href="#jobDetailsPane" data-toggle="tab">Detail</a></li>
 				</ul>
 				<div class="tab-content">
 					<!-- /.tab-pane -->
-					<div class="tab-pane" id="volInfo">
-						<table class="table table-bordered table-hover" id="volInfoTable">
+					<div class="tab-pane" id="jobDesc">
+						<table class="table table-bordered table-hover" id="jobDescTable">
+							<thead>
 							<tr>
-								<th>HostPath</th>
-								<th>ContainerPath</th>
-								<th>Mode</th>
+								<th>Property</th>
+								<th>Value</th>
 							</tr>
+							</thead>
+							<tbody></tbody>
 						</table>
 					</div>
-					<!-- /.tab-pane -->
-					<div class="tab-pane active" id="basicInfo">
-						<table class="table table-hover" id="jobPreviousRuns">
+					<!--s /.tab-pane -->
+					<div class="tab-pane" id="previousRuns">
+						<table class="table table-bordered table-hover" id="jobPreviousRuns">
 							<thead>
 							<tr>
 									<th>Start</th>
 									<th>End</th>
 									<th>Status</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+					<!-- /.tab-pane -->
+					<div class="tab-pane active" id="jobDetailsPane">
+						<table class="table table-bordered table-hover" id="jobDetailsTable">
+							<thead>
+							<tr>
+									<th>Mode</th>
+									<th>Start</th>
+									<th>End</th>
+									<th>Machine</th>
+									<th>Exit Status</th>
 								</tr>
 							</thead>
 							<tbody></tbody>
@@ -63,6 +81,7 @@
 <section class="content">
 	<!-- Small boxes (Stat box) -->
 	<div class="row">
+	<p id="notice"><%= notice %></p>
 		<div class="col-lg-3 col-xs-6" onclick="filterTable('all', this)">
 			<div class="info-box cursor-pointer">
 				<span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
@@ -154,18 +173,20 @@
 					<table class="table table-hover" id="jobList">
 						<thead>
 							<tr class="cursor-pointer">
-								<th>Job Name <i class="fa fa-sort"></i></th>
-								<th>Start (AEST) <i class="fa fa-sort"></th>
-								<th>End (AEST) <i class="fa fa-sort"></th>
-								<th>Status <i class="fa fa-sort"></th>
+								<th>Job Name</i></th>
+								<th>Start</th>
+								<th>End</th>
+								<th>Status</th>
+								<th>Job Log</th>
+								<th>Err Log</th>
 							</tr>
 						</thead>
 						<tbody>
 							<% @jobList.each do |job| %>
-							<tr>
+							<tr class="jobDetailList">
 								<td class="cursor-pointer autosysJobName"><%= job['jobName'] %></td>
-								<td><%= job['start'] %></td>
-								<td><%= job['end'] %></td>
+								<td class="startTime"><%= job['start'] %></td>
+								<td class="endTime"><%= job['end'] %></td>
 								<td>
 									<p class="statusIcon label">
 										<%if job['status'] == 'SU'%>
@@ -179,6 +200,8 @@
 										<% end %>
 									</p>
 								</td>
+								<td><i class="fa fa-file-text-o cursor-pointer " onclick="downloadLog('<%=job['jobName']%>', 'log', '<%=job['timeSuffix']%>')"></i>
+								<td><i class="fa fa-file-text cursor-pointer " onclick="downloadLog('<%=job['jobName']%>', 'err', '<%=job['timeSuffix']%>')"></i>
 							</tr>
 							<% end %>
 						</tbody>

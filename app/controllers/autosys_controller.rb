@@ -7,7 +7,7 @@ class AutosysController < ApplicationController
 		@idleCount = 0
 		keyword = params[:keyword]
 		if keyword != nil
-			rest_resource = RestClient::Resource.new(URI+"/jobList?keyword="+keyword, "", "")
+			rest_resource = RestClient::Resource.new(URI+"/jobList?keyword="+keyword, :timeout => -1, :open_timeout => -1)
 			jobList = rest_resource.get
 			@jobList = JSON.parse(jobList)
 			@jobList.each do |job|
@@ -21,7 +21,6 @@ class AutosysController < ApplicationController
 			end 
 		elsif
 			@jobList = []
-			#@jobList = JSON.parse(@json)
 		end		
 		@failedJobs  = @failureCount
 		@successJobs = @successCount
@@ -29,9 +28,9 @@ class AutosysController < ApplicationController
 		@totalJob    = @successJobs + @failedJobs + @idleJobs 
 	end
 
-	def getJobDetail
+	def jobPreviousRuns
 		jobName = params[:jobName]
-		rest_resource = RestClient::Resource.new(URI+'/jobPreviousRuns?jobName='+jobName, "", "")
+		rest_resource = RestClient::Resource.new(URI+'/jobPreviousRuns?jobName='+jobName, :timeout => -1, :open_timeout => -1)
 		jobDetail = rest_resource.get
 		@jobDetail = JSON.parse(jobDetail)
 		respond_to do |format|
@@ -39,7 +38,33 @@ class AutosysController < ApplicationController
 		end
 	end
 
-	def getJobs
+	def getJobDesc
+		jobName = params[:jobName]
+		rest_resource = RestClient::Resource.new(URI+'/getJobDesc?jobName='+jobName, :timeout => -1, :open_timeout => -1)
+		jobDetail = rest_resource.get
+		@jobDetail = JSON.parse(jobDetail)
+		respond_to do |format|
+			format.json { render json: @jobDetail, :status => :ok}
+		end
+	end
+
+	def getJobRunDetail
+		jobName = params[:jobName]
+		rest_resource = RestClient::Resource.new(URI+'/getJobRunDetail?jobName='+jobName, :timeout => -1, :open_timeout => -1)
+		jobDetail = rest_resource.get
+		@jobDetail = JSON.parse(jobDetail)
+		respond_to do |format|
+			format.json { render json: @jobDetail, :status => :ok}
+		end
+	end
+
+	def getJobLog
+		fileName = params[:fileName]
+		logType = params[:logType]
+		timeSuffix = params[:timeSuffix]
+		rest_resource = RestClient::Resource.new(URI+'/getLog?fileName='+fileName+'&logType='+logType+'&timeSuffix='+timeSuffix, :timeout => -1, :open_timeout => -1)
+		jobLog = rest_resource.get	
+		send_data jobLog
 	end
 
 end

@@ -34,20 +34,43 @@ $(function(){
 	});
 
 	$(".autosysJobName").click(function(){
-		var jobName = $(this).text();
-		var statusIcon;
+		getJobRunDetail($(this).text())
+		
+	});
+	
+	function getJobRunDetail(jobName){
+		$.ajax({
+			type: 'GET', 
+			dataType: 'html',
+			url: 'getJobRunDetail', 
+			data: { jobName: jobName},
+			beforeSend: function(){$("#load-screen").show();},
+			success: function(data){
+				$("#jobDetails #jobName").text(jobName);
+				$("#load-screen").hide();
+				loadModal();
+				var job = JSON.parse(data);
+				$('#jobDetailsTable').find("tr:gt(0)").remove();
+				for(var i = 0; i < job.length; i++ ){
+					$('#jobDetailsTable > tbody:last-child').append('<tr><td>'+job[i].mode+'</td><td>'+job[i].start+'</td><td>'+job[i].end+'</td><td>'+job[i].machine+'</td><td>'+job[i].status+'</td></tr>');
+				}
+				getPreviousRuns(jobName)
+			},
+			error: function() {
+				alert("ERROR")
+			}
+		});
+	}
+
+	function getPreviousRuns(jobName){
 		$.ajax({ 
 			type: 'GET', 
 			dataType: 'html',
 			data: { jobName: jobName},
-			url: 'getJobDetail', 
-			beforeSend: function(){$("#load-screen").show();},
+			url: 'jobPreviousRuns', 
 			success: function(data){
-				$("#load-screen").hide();
 				var job = JSON.parse(data)
-				$("#jobDetails").modal('show');
 				$('#jobPreviousRuns').find("tr:gt(0)").remove();
-				$("#jobDetails #jobName").text("AUTOSYS JOB: "+jobName);
 				for(var i = 0; i < job.length; i++ ){
 					if(job[i].status == 'SU')
 						statusIcon = '<p class="statusIcon label label-success">success</p>'
@@ -59,12 +82,39 @@ $(function(){
 						statusIcon = '<p class="statusIcon label label-warning">idle</p>'
 					$('#jobPreviousRuns > tbody:last-child').append('<tr><td>'+job[i].start+'</td><td>'+job[i].end+'</td><td>'+statusIcon+'</td></tr>');
 				}
+				loadJobDesc(jobName)
 			},
 			error: function() {
 				alert("ERROR")
 			}
 		});
-	});
+	}
+	function loadJobDesc(jobName){
+		$.ajax({
+			type: 'GET', 
+			dataType: 'html',
+			url: 'getJobDesc', 
+			data: { jobName: jobName},
+			success: function(data){
+				var job = JSON.parse(data);
+				$('#jobDescTable').find("tr:gt(0)").remove();
+				for(var i = 0; i < job.length; i++ ){
+					$('#jobDescTable > tbody:last-child').append('<tr><td>'+job[i][0]+'</td><td>'+job[i][1]+'</td></tr>');
+				}
+			},
+			error: function() {
+				alert("ERROR")
+			}
+		});
+	}
+
+	function loadModal(){
+		$("#jobDetails .nav-tabs-custom li").removeClass("active");
+		$("#jobDetails .nav-tabs-custom li#detailTab").addClass("active");
+		$("#jobDetails .tab-content>div").removeClass("active");
+		$("#jobDetails .tab-content #jobDetailsPane").addClass("active");
+		$("#jobDetails").modal('show');
+	}
 
 	$("#slider-range").slider({
 		range: true,
@@ -91,10 +141,12 @@ $(function(){
 		}
 	});
 	function filterDataOnTime(timeFrom, timeTo) {
-		$( ".jobActualTime").each(function() {
-			var time=$(this).text().split(' ')[4].trim()+"";
-			if(time == "" || time < timeFrom || time > timeTo){
-				$(this).parent().parent().hide();
+		$( ".jobDetailList").each(function() {
+			var startTime=$(this).find('.startTime').text().split(' ')[1].trim()+"";
+			var endTime=$(this).find('.endTime').text().split(' ')[1].trim()+"";
+			console.log(startTime+" - "+endTime+" => "+timeFrom+" - "+timeTo)
+			if(startTime == "" || ((startTime < timeFrom || startTime > timeTo) && (endTime < timeFrom || endTime > timeTo))){
+				$(this).hide();
 			}
 		});
 	}
@@ -144,13 +196,13 @@ function filterTable(value, e){
 		removeSelectionInfoBox();
 		$('#jobList tbody tr').show();
 	}else{
-		if(value == 'idle'){
-			if($(e).children(".info-box").hasClass("bg-yellow")){
+		if(value == 'failed'){
+			if($(e).children(".info-box").hasClass("bg-red")){
 				removeSelectionInfoBox();
 				showAllJobs();
 			}
 			else{
-				$(e).children(".info-box").addClass("bg-yellow");	
+				$(e).children(".info-box").addClass("bg-red");	
 				$('#jobList tr:not(:contains("'+value+'"))').hide();
 
 			}
@@ -167,19 +219,47 @@ function filterTable(value, e){
 			}
 		}
 		else{
-			if($(e).children(".info-box").hasClass("bg-red")){
+			if($(e).children(".info-box").hasClass("bg-yellow")){
 				removeSelectionInfoBox();
 				showAllJobs();
 			}
 			else{
-				$(e).children(".info-box").addClass("bg-red");	
-				$('#jobList tr:not(:contains("'+value+'"))').hide();
+				$(e).children(".info-box").addClass("bg-yellow");	
+				$('#jobList tr:not(:contains("idle") || tr:not(:contains("on-hold"))').hide();
 
 			}
 		}
 		
 	}
 }
+
+function downloadLog(fileName,logType,timeSuffix){
+	$.ajax({
+		type: 'GET', 
+		dataType: 'html',
+		url: 'getJobLog', 
+		data: { 'fileName': fileName, 'logType': logType, 'timeSuffix':timeSuffix},
+		beforeSend: function(){$("#load-screen").show();},
+		success: function(data){
+			$("#load-screen").hide();
+			if(data == "")
+				alert("Log file is empty");
+			else if(data == "No_File_found")
+				alert("Log file not found");
+			else{
+				var blob=new Blob([data]);
+				var link=document.createElement('a');
+				link.href=window.URL.createObjectURL(blob);
+				link.download=fileName+"."+logType+timeSuffix;
+				link.click();
+			}
+		},
+		error: function() {
+			alert("ERROR")
+		}
+	});
+}
+
 function showJobDetails(jobDetail){
 	alert(jobDetail.html);
 	var job = $(jobDetail).find(".jobDescription").data('job')
@@ -201,6 +281,5 @@ function showJobDetails(jobDetail){
 		else
 			ico="<i class='fa fa-unlock'></i>"
 		$('#volInfoTable > tbody:last-child').append('<tr><td>'+job.container.volumes[i].hostPath+'</td><td>'+job.container.volumes[i].containerPath+'</td><td><div class="badge bg-blue">'+ico+job.container.volumes[i].mode+'</div></td></tr>');
-
 	}
 }
