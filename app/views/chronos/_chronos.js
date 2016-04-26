@@ -113,7 +113,7 @@ function filterTable(value, e){
 			}
 			else{
 				$(e).children(".info-box").addClass("bg-yellow");	
-				$('#jobList tr:not(:contains("'+value+'"))').hide();
+				$('#jobList tbody tr:not(:contains("'+value+'"))').hide();
 
 			}
 		}
@@ -124,7 +124,7 @@ function filterTable(value, e){
 			}
 			else{
 				$(e).children(".info-box").addClass("bg-green");	
-				$('#jobList tr:not(:contains("'+value+'"))').hide();
+				$('#jobList tbody tr:not(:contains("'+value+'"))').hide();
 
 			}
 		}
@@ -135,7 +135,7 @@ function filterTable(value, e){
 			}
 			else{
 				$(e).children(".info-box").addClass("bg-red");	
-				$('#jobList tr:not(:contains("'+value+'"))').hide();
+				$('#jobList tbody tr:not(:contains("'+value+'"))').hide();
 
 			}
 		}

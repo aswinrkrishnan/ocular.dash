@@ -2,8 +2,6 @@ Rails.application.routes.draw do
 
   root 'chronos#home'
 
-  devise_for :users
-
   get 'chronos/home'
 
   get 'chronos/getJobs'
