@@ -187,7 +187,7 @@
 								<td class="cursor-pointer autosysJobName"><%= job['jobName'] %></td>
 								<td class="startTime"><%= job['start'] %></td>
 								<td class="endTime"><%= job['end'] %></td>
-								<td>
+								<td><%= job['status'] %>
 									<p class="statusIcon label">
 										<%if job['status'] == 'SU'%>
 										<%= "success" %>
@@ -195,6 +195,8 @@
 										<%= "failed" %>
 										<%elsif job['status'] == 'OH'%>
 										<%= "on-hold" %>
+										<%elsif job['status'] == 'RU'%>
+										<%= "running" %>
 										<% else %>
 										<%= "idle" %>
 										<% end %>
