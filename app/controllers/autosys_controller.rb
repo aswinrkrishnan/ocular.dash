@@ -1,5 +1,6 @@
 class AutosysController < ApplicationController
 
+	$application = "Autosys"
 	AUTOSYS_URI = ENV["AUTOSYS_URI"]
 	def index
 		@failureCount = 0
@@ -26,6 +27,8 @@ class AutosysController < ApplicationController
 		@successJobs = @successCount
 		@idleJobs    = @idleCount
 		@totalJob    = @successJobs + @failedJobs + @idleJobs 
+		rescue => ex	
+			render :template => "errors/internal_server_error"
 	end
 
 	def jobPreviousRuns
@@ -36,6 +39,8 @@ class AutosysController < ApplicationController
 		respond_to do |format|
 			format.json { render json: @jobDetail, :status => :ok}
 		end
+		rescue => ex
+			 render :template => "errors/internal_server_error"
 	end
 
 	def getJobDesc
@@ -56,6 +61,8 @@ class AutosysController < ApplicationController
 		respond_to do |format|
 			format.json { render json: @jobDetail, :status => :ok}
 		end
+		rescue => ex
+			 render :template => "errors/internal_server_error"
 	end
 
 	def getJobLog
@@ -65,6 +72,8 @@ class AutosysController < ApplicationController
 		rest_resource = RestClient::Resource.new(AUTOSYS_URI+'/getLog?fileName='+fileName+'&logType='+logType+'&timeSuffix='+timeSuffix, :timeout => -1, :open_timeout => -1)
 		jobLog = rest_resource.get	
 		send_data jobLog
+		rescue => ex
+			 render :template => "errors/internal_server_error"
 	end
 
 end
