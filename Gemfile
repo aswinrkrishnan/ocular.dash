@@ -31,5 +31,3 @@ gem 'bootstrap-sass', '~> 3.3', '>= 3.3.6'
 gem 'rest-client'
 gem 'net-ldap'
 
-end
-
