@@ -2,6 +2,8 @@
 
 **Chronos Dashboard**
 
+[![Build Status](https://travis-ci.org/aswinrkrishnan/ocular.dash.png)](https://travis-ci.org/aswinrkrishnan/ocular.dash)
+
 Displays details of the jobs that run on chronos.
 
 Available options:
